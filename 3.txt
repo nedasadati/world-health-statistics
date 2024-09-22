@@ -1,0 +1,26 @@
+from pandas import read_csv
+import pandas as pd
+
+# load the dataset
+df1 = pd.read_csv('crudeSuicideRates.csv')
+#df1.head(5)
+df1.drop(columns=['Indicator'], inplace=True, axis=1)
+df1.drop(df1[df1['Period'] != 2015].index, inplace = True)
+df1 = df1.query("Dim1 == 'Both sexes'")
+df1.rename(columns = {'First Tooltip':'crudeSuicideRate'}, inplace = True)
+df1 = df1.drop(columns=['Dim1'])
+
+
+
+# load the dataset
+df2 = pd.read_csv('alcoholSubstanceAbuse.csv')
+#df1.head(5)
+df2.drop(columns=['Indicator'], inplace=True, axis=1)
+df2.drop(df2[df2['Period'] != 2015].index, inplace = True)
+df2 = df2.query("Dim1 == 'Both sexes'")
+df2.rename(columns = {'First Tooltip':'alcoholSubstanceAbuse'}, inplace = True)
+df2 = df2.drop(columns=['Dim1'])
+
+df = pd.merge(df1, df2, how='inner')
+
+df.to_csv("three.csv",index=False)
