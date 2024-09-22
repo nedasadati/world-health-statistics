@@ -1,0 +1,47 @@
+from pandas import read_csv
+import pandas as pd
+
+# load the dataset
+df1 = pd.read_csv('dentists.csv')
+#df1.head(5)
+df1.drop(columns=['Indicator'], inplace=True, axis=1)
+df1.drop(df1[df1['Period'] < 2017].index, inplace = True)
+df1.drop(df1[df1['Period'] == 2019].index, inplace = True)
+df1.drop(df1[df1['First Tooltip'] > 4.98].index, inplace = True)
+df1.rename(columns = {'First Tooltip':'dentist'}, inplace = True)
+df1
+
+# load the dataset
+df2 = pd.read_csv('medicalDoctors.csv')
+#df1.head(5)
+df2.drop(columns=['Indicator'], inplace=True, axis=1)
+df2.drop(df2[df2['Period'] < 2017].index, inplace = True)
+df2.drop(df2[df2['Period'] == 2019].index, inplace = True)
+df2.drop(df2[df2['First Tooltip'] > 10].index, inplace = True)
+df2.rename(columns = {'First Tooltip':'medicaldoctor'}, inplace = True)
+df2
+
+# load the dataset
+df3 = pd.read_csv('nursingAndMidwife.csv')
+#df1.head(5)
+df3.drop(columns=['Indicator'], inplace=True, axis=1)
+df3.drop(df3[df3['Period'] < 2017].index, inplace = True)
+df3.drop(df3[df3['Period'] == 2019].index, inplace = True)
+df3.drop(df3[df3['First Tooltip'] > 195].index, inplace = True)
+df3.rename(columns = {'First Tooltip':'nursingAndMidwife'}, inplace = True)
+df3
+
+# load the dataset
+df4 = pd.read_csv('pharmacists.csv')
+#df1.head(5)
+df4.drop(columns=['Indicator'], inplace=True, axis=1)
+df4.drop(df4[df4['Period'] < 2017].index, inplace = True)
+df4.drop(df4[df4['Period'] == 2019].index, inplace = True)
+df4.drop(df4[df4['First Tooltip'] > 0.4].index, inplace = True)
+df4.rename(columns = {'First Tooltip':'pharmacist'}, inplace = True)
+df4
+
+part1 = pd.merge(df1, df2, how='outer')
+part2 = pd.merge(df3, df4, how='outer')
+df = pd.merge(part1, part2, how='outer')
+df.to_csv("two.csv",index=False)
